@@ -1,19 +1,18 @@
 package com.example.probaapiapp;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,16 +20,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -39,20 +34,67 @@ public class ProbaActivity extends AppCompatActivity {
 
     String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     TextView reciever;
+    TabLayout tabLayout;
+    FrameLayout simpleFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.proba_main);
 
-        reciever = findViewById(R.id.received_value_id);
         Intent intent = getIntent();
-        Integer idOfMensa = intent.getIntExtra("id", 0);
+        String tomorrow = intent.getStringExtra("tomorrow");
+
+        reciever = findViewById(R.id.received_value_id);
         String source = intent.getStringExtra("name");
         reciever.setText(source);
 
-        String url = "https://mensatreff-api.spyfly.xyz/mensas/" + idOfMensa + "?date=" + currentDate;
-        //System.out.println("\n!!!!!!!!!!!!!!!!!!!" + url);
+        simpleFrameLayout = (FrameLayout) findViewById(R.id.simpleFrameLayout);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        TabLayout.Tab firstTab = tabLayout.newTab();
+        firstTab.setText("today");
+        tabLayout.addTab(firstTab);
+
+        TabLayout.Tab secondTab = tabLayout.newTab();
+        secondTab.setText("tomorrow");
+        tabLayout.addTab(secondTab);
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setTypeOfMenu(currentDate, intent); //todo check if work. if not --> replace to another place
+
+                switch (tab.getPosition()) {
+                    case 0:
+                        setTypeOfMenu(currentDate, intent);
+                        break;
+                    case 1:
+                        setTypeOfMenu(tomorrow, intent);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+
+    }
+
+    private void setTypeOfMenu(String date, Intent intent){
+        LinearLayout layout = findViewById(R.id.layoutInner);
+
+        layout.removeAllViews();
+
+        Integer idOfMensa = intent.getIntExtra("id", 0);
+
+        String url = "https://mensatreff-api.spyfly.xyz/mensas/" + idOfMensa + "?date=" + date;
         StringRequest request = new StringRequest(
                 Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -61,25 +103,8 @@ public class ProbaActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(response);
                     JSONArray array = obj.getJSONArray("response");
 
-                    LinearLayout layout = findViewById(R.id.layoutProba);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject tempObj = array.getJSONObject(i);
-//                        ImageView image = new ImageView(ProbaActivity.this);
-//
-//                        Picasso
-//                                .with(ProbaActivity.this)
-//                                .load("https:"+tempObj
-//                                        .getString("image"))
-//                                .into(image);
-//                        //image.setMaxWidth(10);
-//                        layout.addView(image);
-
-                        /*InputStream is = (InputStream) new URL(tempObj.getJSONObject("image").toString()).getContent();
-                        Drawable d = Drawable.createFromStream(is, "src name");
-                        image.setImageDrawable(d);
-                        layout.addView(image);
-    */
-
                         TextView tempView = new TextView(ProbaActivity.this);
                         JSONObject price = tempObj.getJSONObject("prices");
                         tempView.setText(Html.fromHtml(

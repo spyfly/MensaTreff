@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProbaActivity">
+
 
     <LinearLayout
         android:id="@+id/layoutProba"
@@ -11,6 +13,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:weightSum="3">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#1db995" />
+
 
         <TextView
             android:id="@+id/received_value_id"
@@ -22,6 +31,29 @@
             android:text="mensa id"
             android:textSize="40sp"
             android:textStyle="bold" />
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:id="@+id/layoutInner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="3" />
+
+        </ScrollView>
+        >
+
+
+        <FrameLayout
+            android:id="@+id/simpleFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
     </LinearLayout>
+
 
 </RelativeLayout>

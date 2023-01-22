@@ -29,7 +29,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button b1;
+   // Button b1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //new activity
-        b1 = findViewById(R.id.page1);
+       /* b1 = findViewById(R.id.page1);
         b1.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 }
-        );
-
+        );*/
 
 //mensas
         TextView name = findViewById(R.id.name);
@@ -66,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject innerObj = array.getJSONObject(1);
                     name.setText(size.toString());
 
+                    String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                    String tomorrow=currentDate;
+
                     LinearLayout layout = findViewById(R.id.layout);
                     for (int i = 0; i < array.length(); i++) {
                         LinearLayout innerLayout = new LinearLayout(MainActivity.this);
@@ -73,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
                         Button nameOfMensa = new Button(MainActivity.this);
                         TextView furtherInformationAboutMensa = new TextView(MainActivity.this);
-                        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
                         TextView date = new TextView(MainActivity.this);
                         date.setText("today is closed");
                         JSONArray arrayDays = currentObj.getJSONArray("days");
                         for (int j = 0; j < arrayDays.length(); j++) {
                             if (arrayDays.getJSONObject(j).getString("date").equals(currentDate)) {
+                                tomorrow= arrayDays.getJSONObject(j+1).getString("date");
                                 JSONObject today = arrayDays.getJSONObject(j);
                                 if(today.getString("closed").equals("false")){
                                     date.setText(Html.fromHtml("today is"+"<b>"+" opened"+"</b>" + "<br>"));
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         furtherInformationAboutMensa.setText(Html.fromHtml("<i>" + "Address: " + "</i>" + currentObj.getString("address")));
                         nameOfMensa.setText(currentObj.getString("name")); //may does not work
                         nameOfMensa.setId(currentObj.getInt("id"));
+                        String finalTomorrow = tomorrow;
                         nameOfMensa.setOnClickListener(
                                 v -> {
                                     String source = nameOfMensa.getText().toString();
@@ -95,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(), ProbaActivity.class);
                                     intent.putExtra("name", source);
                                     intent.putExtra("id", idOfCurrentMensa);
+                                    intent.putExtra("tomorrow", finalTomorrow);
                                     startActivity(intent);
                                 });
                         layout.addView(nameOfMensa);
