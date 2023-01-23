@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,34 +22,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-   // Button b1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //https://openmensa.org/api/v2/canteens?near[lat]=51.0287926&near[lng]=13.7255497
-        //https://www.boredapi.com/api/activity
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //new activity
-       /* b1 = findViewById(R.id.page1);
-        b1.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent(MainActivity.this, ProbaActivity.class);
-                        startActivity(i);
-                    }
-                }
-        );*/
 
-//mensas
         TextView name = findViewById(R.id.name);
 
         String url = "https://mensatreff-api.spyfly.xyz/mensas";

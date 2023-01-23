@@ -1,9 +1,11 @@
 package com.example.probaapiapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,12 +63,11 @@ public class ProbaActivity extends AppCompatActivity {
         secondTab.setText("tomorrow");
         tabLayout.addTab(secondTab);
 
-
+        setTypeOfMenu(currentDate, intent);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                setTypeOfMenu(currentDate, intent); //todo check if work. if not --> replace to another place
-
                 switch (tab.getPosition()) {
                     case 0:
                         setTypeOfMenu(currentDate, intent);
@@ -74,7 +76,6 @@ public class ProbaActivity extends AppCompatActivity {
                         setTypeOfMenu(tomorrow, intent);
                         break;
                 }
-
             }
 
             @Override
@@ -83,8 +84,6 @@ public class ProbaActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
-
-
     }
 
     private void setTypeOfMenu(String date, Intent intent){
@@ -114,7 +113,10 @@ public class ProbaActivity extends AppCompatActivity {
                                         "<b>prices:</b><br>" + "for students: " + price.getString("Studierende") + "<br>" +
                                         "for employee: " + price.getString("Bedienstete") + "<br>"
                         ));
-
+                        ImageView imageView = new ImageView(ProbaActivity.this);
+                        String imageUrl = tempObj.getString("image");
+                        Picasso.get().load("https:"+imageUrl).into(imageView);
+                        layout.addView(imageView);
                         layout.addView(tempView);
                     }
 

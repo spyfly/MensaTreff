@@ -44,8 +44,6 @@
                 android:weightSum="3" />
 
         </ScrollView>
-        >
-
 
         <FrameLayout
             android:id="@+id/simpleFrameLayout"
