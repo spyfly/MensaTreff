@@ -76,8 +76,9 @@ app.get('/mensas/:id', (req, res) => {
   if (!date) {
     const today = new Date();
     date = today.getFullYear() + '-' + (today.getMonth()+1+'').padStart(2, '0') + '-' + (today.getDay()+1+'').padStart(2, '0');
+    console.log(date)
   }
-  axios.get('https://api.studentenwerk-dresden.de/openmensa/v2/canteens/6/days/'+date+'/meals')
+  axios.get('https://api.studentenwerk-dresden.de/openmensa/v2/canteens/'+req.params.id+'/days/'+date+'/meals')
   .then(async function (response) {
     res.send({
       response: response.data,
@@ -87,5 +88,5 @@ app.get('/mensas/:id', (req, res) => {
 
 const port = 3000;
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`MensaTreff API listening on port ${port}`)
 })
