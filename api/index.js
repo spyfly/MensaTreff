@@ -1,6 +1,7 @@
 /* OpenAPI Spec Start */
 const swaggerJsdoc = require('swagger-jsdoc');
 
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -26,21 +27,36 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 /* DB Setup */
 const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database('db.sqlite3')
-db.run(`CREATE TABLE IF NOT EXISTS users (
+const { open } = require('sqlite');
+(async () => {
+  const db = await open({
+    filename: 'db.sqlite3',
+    driver: sqlite3.Database
+  })
+
+  await db.run(`CREATE TABLE IF NOT EXISTS users (
 	  id INTEGER PRIMARY KEY AUTOINCREMENT,
    	username TEXT NOT NULL,
 	  passkey TEXT NOT NULL
 )`)
 
-const mensas = require('./routes/mensas.js');
-mensas.setup(app);
-const match = require('./routes/match.js');
-match.setup(app);
-const user = require('./routes/user.js')
-user.setup(app, db);
+  await db.run(`CREATE TABLE IF NOT EXISTS matches (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  mensaId INTEGER NOT NULL,
+  date TEXT NOT NULL,
+  timeslot TEXT NOT NULL,
+  userId TEXT NOT NULL
+)`)
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`MensaTreff API listening on port ${port}`)
-})
+  const mensas = require('./routes/mensas.js');
+  mensas.setup(app);
+  const match = require('./routes/match.js');
+  match.setup(app, db);
+  const user = require('./routes/user.js')
+  user.setup(app, db);
+
+  const port = 3000;
+  app.listen(port, () => {
+    console.log(`MensaTreff API listening on port ${port}`)
+  })
+})()
