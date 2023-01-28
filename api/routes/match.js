@@ -182,7 +182,7 @@ module.exports.setup = (app, db) => {
  *       200:
  *         description: Lists all possible matches for a certain day
  */
-    app.post("/match/:mensaId/:date/:timeslot", async (req, res) => {
+    app.delete("/match/:mensaId/:date/:timeslot", async (req, res) => {
         const user = await getUser(req, res, db);
         if (user) {
             const mensaId = req.params.mensaId
