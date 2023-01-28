@@ -4,13 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,7 +28,11 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
+import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "https://mensatreff-api.spyfly.xyz/mensas";
         StringRequest request = new StringRequest(
-                Request.Method.GET, url, new Response.Listener<String>() {
+                Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -105,5 +114,4 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
     }
-
 }

@@ -4,9 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -31,19 +39,43 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class ProbaActivity extends AppCompatActivity {
 
-    String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-    TextView reciever;
-    TabLayout tabLayout;
-    FrameLayout simpleFrameLayout;
+    private String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+    private TextView reciever;
+    private TabLayout tabLayout;
+    private FrameLayout simpleFrameLayout;
+    private RadioGroup radioGroup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.proba_main);
+
+        radioGroup = findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId);
+                Toast.makeText(ProbaActivity.this, "Selected Radio Button is : " + radioButton.getText(), Toast.LENGTH_SHORT).show();
+                //if(radioButton.getText().equals("registration")){
+                    radioButton.setOnClickListener(
+                            v -> {
+                                String source = radioButton.getText().toString();
+                                //Integer idOfCurrentMensa = nameOfMensa.getId();
+                                Intent intent = new Intent(getApplicationContext(), MatchingActivity.class);
+                                intent.putExtra("regime", source);
+                               // intent.putExtra("id", idOfCurrentMensa);
+                                startActivity(intent);
+                            });
+                //}
+            }
+        });
 
         Intent intent = getIntent();
         String tomorrow = intent.getStringExtra("tomorrow");
@@ -79,14 +111,16 @@ public class ProbaActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
     }
 
-    private void setTypeOfMenu(String date, Intent intent){
+    private void setTypeOfMenu(String date, Intent intent) {
         LinearLayout layout = findViewById(R.id.layoutInner);
 
         layout.removeAllViews();
@@ -115,7 +149,8 @@ public class ProbaActivity extends AppCompatActivity {
                         ));
                         ImageView imageView = new ImageView(ProbaActivity.this);
                         String imageUrl = tempObj.getString("image");
-                        Picasso.get().load("https:"+imageUrl).into(imageView);
+                        Picasso.get().load("https:" + imageUrl).networkPolicy(NetworkPolicy.OFFLINE).into(imageView);
+
                         layout.addView(imageView);
                         layout.addView(tempView);
                     }
@@ -137,4 +172,5 @@ public class ProbaActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
     }
+
 }
