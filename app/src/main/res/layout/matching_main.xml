@@ -100,6 +100,74 @@
 
         </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/layoutTimeslot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                android:weightSum="3">
+
+                <CheckBox
+                    android:id="@+id/checkbox3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="11:30-12:00" />
+
+                <CheckBox
+                    android:id="@+id/checkbox4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="12:00-12:30" />
+
+                <CheckBox
+                    android:id="@+id/checkbox5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="12:30-13:00" />
+
+                <CheckBox
+                    android:id="@+id/checkbox6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="13:00-13:30" />
+
+                <CheckBox
+                    android:id="@+id/checkbox7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="13:30-14:00" />
+
+                <CheckBox
+                    android:id="@+id/checkbox8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="14:00-14:30" />
+
+                <CheckBox
+                    android:id="@+id/checkbox9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="14:30-15:00" />
+
+                <CheckBox
+                    android:id="@+id/checkbox10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="15:00-15:30" />
+
+                <Button
+                    android:id="@+id/addTimeslotsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add timeslots for matching"/>
+            </LinearLayout>
+        </ScrollView>
+
 
     </LinearLayout>
 

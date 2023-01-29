@@ -58,24 +58,7 @@ public class ProbaActivity extends AppCompatActivity {
         setContentView(R.layout.proba_main);
 
         radioGroup = findViewById(R.id.radioGroup);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton radioButton = findViewById(checkedId);
-                Toast.makeText(ProbaActivity.this, "Selected Radio Button is : " + radioButton.getText(), Toast.LENGTH_SHORT).show();
-                //if(radioButton.getText().equals("registration")){
-                    radioButton.setOnClickListener(
-                            v -> {
-                                String source = radioButton.getText().toString();
-                                //Integer idOfCurrentMensa = nameOfMensa.getId();
-                                Intent intent = new Intent(getApplicationContext(), MatchingActivity.class);
-                                intent.putExtra("regime", source);
-                               // intent.putExtra("id", idOfCurrentMensa);
-                                startActivity(intent);
-                            });
-                //}
-            }
-        });
+
 
         Intent intent = getIntent();
         String tomorrow = intent.getStringExtra("tomorrow");
@@ -95,6 +78,10 @@ public class ProbaActivity extends AppCompatActivity {
         secondTab.setText("tomorrow");
         tabLayout.addTab(secondTab);
 
+        Integer idOfMensa = intent.getIntExtra("id", 0);
+        final String[] date = new String[1];
+        date[0]=currentDate;
+
         setTypeOfMenu(currentDate, intent);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
@@ -103,9 +90,11 @@ public class ProbaActivity extends AppCompatActivity {
                 switch (tab.getPosition()) {
                     case 0:
                         setTypeOfMenu(currentDate, intent);
+                        date[0] =currentDate;
                         break;
                     case 1:
                         setTypeOfMenu(tomorrow, intent);
+                        date[0] =tomorrow;
                         break;
                 }
             }
@@ -118,11 +107,28 @@ public class ProbaActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId);
+                Toast.makeText(ProbaActivity.this, "Selected Radio Button is : " + radioButton.getText(), Toast.LENGTH_SHORT).show();
+                radioButton.setOnClickListener(
+                        v -> {
+                            String source = radioButton.getText().toString();
+                            Intent intent = new Intent(getApplicationContext(), MatchingActivity.class);
+                            intent.putExtra("regime", source);
+                            intent.putExtra("date", date[0]);
+                            intent.putExtra("mensaId", idOfMensa);
+                            startActivity(intent);
+                        });
+            }
+        });
+
+
     }
 
     private void setTypeOfMenu(String date, Intent intent) {
         LinearLayout layout = findViewById(R.id.layoutInner);
-
         layout.removeAllViews();
 
         Integer idOfMensa = intent.getIntExtra("id", 0);
