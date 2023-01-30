@@ -56,7 +56,7 @@ public class MatchingActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String regime = intent.getStringExtra("regime");
-        Integer mensaId = intent.getIntExtra("mensaId",0);
+        Integer mensaId = intent.getIntExtra("mensaId", 0);
         String date = intent.getStringExtra("date");
 
         userName = findViewById(R.id.userName);
@@ -67,16 +67,16 @@ public class MatchingActivity extends AppCompatActivity {
         layoutLogin = findViewById(R.id.layoutLogin);
         loginPass = findViewById(R.id.loginPass);
         loginBtn = findViewById(R.id.loginBtn);
-        layoutTimeslot =findViewById(R.id.layoutTimeslot);
-        addTimeslotsBtn =findViewById(R.id.addTimeslotsBtn);
-        checkBox3=findViewById(R.id.checkbox3);
-        checkBox4=findViewById(R.id.checkbox4);
-        checkBox5=findViewById(R.id.checkbox5);
-        checkBox6=findViewById(R.id.checkbox6);
-        checkBox7=findViewById(R.id.checkbox7);
-        checkBox8=findViewById(R.id.checkbox8);
-        checkBox9=findViewById(R.id.checkbox9);
-        checkBox10=findViewById(R.id.checkbox10);
+        layoutTimeslot = findViewById(R.id.layoutTimeslot);
+        addTimeslotsBtn = findViewById(R.id.addTimeslotsBtn);
+        checkBox3 = findViewById(R.id.checkbox3);
+        checkBox4 = findViewById(R.id.checkbox4);
+        checkBox5 = findViewById(R.id.checkbox5);
+        checkBox6 = findViewById(R.id.checkbox6);
+        checkBox7 = findViewById(R.id.checkbox7);
+        checkBox8 = findViewById(R.id.checkbox8);
+        checkBox9 = findViewById(R.id.checkbox9);
+        checkBox10 = findViewById(R.id.checkbox10);
 
         if (regime.equals("registration")) {
             postBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,11 +87,15 @@ public class MatchingActivity extends AppCompatActivity {
                         return;
                     }
                     postUserName(userName.getText().toString());
+                    layoutMatching.setVisibility(View.GONE);
+                    layoutLogin.setVisibility(View.VISIBLE);
                 }
             });
+        } else {
+            layoutMatching.setVisibility(View.GONE);
+            layoutLogin.setVisibility(View.VISIBLE);
         }
-        layoutMatching.setVisibility(View.GONE);
-        layoutLogin.setVisibility(View.VISIBLE);
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,27 +109,23 @@ public class MatchingActivity extends AppCompatActivity {
     }
 
     private void login(String passkey, String mensaId, String date) {
-        String url = "https://mensatreff-api.spyfly.xyz/match/35/2023-01-30";
+        String url = "https://mensatreff-api.spyfly.xyz/match/" + mensaId + "/" + date;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try {
-                    //todo:  add timeslots, find matches, show them for chosen timeslots, ASK FOR TODAY OR TOMORROW
-                    layoutLogin.setVisibility(View.GONE);
-                    layoutTimeslot.setVisibility(View.VISIBLE);
-
-                    JSONObject obj = new JSONObject(response);
-                    String timeslots = obj.getString("timeslots");
-                    addTimeslotsBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addTimeslots(v, passkey, mensaId, date);
-                        }
-                    });
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                layoutLogin.setVisibility(View.GONE);
+                layoutTimeslot.setVisibility(View.VISIBLE);
+                addTimeslotsBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addTimeslots(v, passkey, mensaId, date);
+                        Intent intent = new Intent(getApplicationContext(), OverviewActivity.class);
+                        intent.putExtra("date", date);
+                        intent.putExtra("mensaId", mensaId);
+                        intent.putExtra("passkey", passkey);
+                        startActivity(intent);
+                    }
+                });
             }
         }, new Response.ErrorListener() {
             @Override
@@ -148,30 +148,34 @@ public class MatchingActivity extends AppCompatActivity {
     }
 
     private void addTimeslots(View v, String passkey, String mensaId, String date) {
-
-        if(checkBox3.isChecked()){
+        if (checkBox3.isChecked()) {
             postTimeslots(checkBox3.getText().toString(), passkey, mensaId, date);
-        }if(checkBox4.isChecked()){
+        }
+        if (checkBox4.isChecked()) {
             postTimeslots(checkBox4.getText().toString(), passkey, mensaId, date);
-        }if(checkBox5.isChecked()){
+        }
+        if (checkBox5.isChecked()) {
             postTimeslots(checkBox5.getText().toString(), passkey, mensaId, date);
-        }if(checkBox6.isChecked()){
+        }
+        if (checkBox6.isChecked()) {
             postTimeslots(checkBox6.getText().toString(), passkey, mensaId, date);
-        }if(checkBox7.isChecked()){
+        }
+        if (checkBox7.isChecked()) {
             postTimeslots(checkBox7.getText().toString(), passkey, mensaId, date);
-        }if(checkBox8.isChecked()){
+        }
+        if (checkBox8.isChecked()) {
             postTimeslots(checkBox8.getText().toString(), passkey, mensaId, date);
-        }if(checkBox9.isChecked()){
+        }
+        if (checkBox9.isChecked()) {
             postTimeslots(checkBox9.getText().toString(), passkey, mensaId, date);
-        }if(checkBox10.isChecked()){
+        }
+        if (checkBox10.isChecked()) {
             postTimeslots(checkBox10.getText().toString(), passkey, mensaId, date);
         }
-
-
     }
 
     private void postTimeslots(String timeslot, String passkey, String mensaId, String date) {
-        String url = "https://mensatreff-api.spyfly.xyz/match/"+mensaId+"/"+date+"/"+timeslot;
+        String url = "https://mensatreff-api.spyfly.xyz/match/" + mensaId + "/" + date + "/" + timeslot;
         RequestQueue queue = Volley.newRequestQueue(MatchingActivity.this);
         StringRequest request = new StringRequest(Request.Method.POST, url, new com.android.volley.Response.Listener<String>() {
             @Override

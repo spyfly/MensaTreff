@@ -34,6 +34,9 @@
         <activity
             android:name=".MatchingActivity"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".OverviewActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

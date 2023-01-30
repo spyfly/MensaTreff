@@ -123,8 +123,6 @@ public class ProbaActivity extends AppCompatActivity {
                         });
             }
         });
-
-
     }
 
     private void setTypeOfMenu(String date, Intent intent) {
