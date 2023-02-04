@@ -57,10 +57,20 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:padding="4dp"
-                        android:text="Name of activity"
+                        android:text="Count"
                         android:textAlignment="center"
                         android:textColor="@color/blue"
                         android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/buttonReload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="reload"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
 
                 </LinearLayout>
 
