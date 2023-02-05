@@ -54,6 +54,7 @@ public class MatchingActivity extends AppCompatActivity {
     private CheckBox checkBox8;
     private CheckBox checkBox9;
     private CheckBox checkBox10;
+    private EditText passkeyEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class MatchingActivity extends AppCompatActivity {
         checkBox8 = findViewById(R.id.checkbox8);
         checkBox9 = findViewById(R.id.checkbox9);
         checkBox10 = findViewById(R.id.checkbox10);
+        passkeyEdit=findViewById(R.id.passkeyEdit);
 
         if (regime.equals("registration")) {
             postBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +117,7 @@ public class MatchingActivity extends AppCompatActivity {
     }
 
     private void login(String passkey, String mensaId, String date) {
+        passkeyEdit.setVisibility(View.GONE);
         String url = "https://mensatreff-api.spyfly.xyz/match/" + mensaId + "/" + date;
         JsonObjectRequest request = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
             @Override
@@ -266,11 +269,12 @@ public class MatchingActivity extends AppCompatActivity {
                 Toast.makeText(MatchingActivity.this, "Data added to API", Toast.LENGTH_SHORT).show();
                 try {
                     JSONObject respObj = new JSONObject(response);
-
                     String name = respObj.getString("username");
                     String password = respObj.getString("passkey");
 
-                    responseData.setText("Name : " + name + "\npasskey : " + password + "\n PLEASE save the passkey!!!!!!!!");
+                    passkeyEdit.setVisibility(View.VISIBLE);
+                    passkeyEdit.setText(password);
+                    responseData.setText("Name : " + name + "\n PLEASE save the passkey!!!!!!!!" + "\npasskey : ");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

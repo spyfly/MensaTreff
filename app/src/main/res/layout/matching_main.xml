@@ -66,9 +66,19 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center_horizontal"
-            android:text="Response"
+            android:text="Please enter your data"
             android:textAlignment="center"
             android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/passkeyEdit"
+            android:layout_width="350dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/green"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:id="@+id/layoutLogin"
@@ -164,7 +174,7 @@
                     android:id="@+id/addTimeslotsBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Add timeslots for matching"/>
+                    android:text="Add timeslots for matching" />
             </LinearLayout>
         </ScrollView>
 

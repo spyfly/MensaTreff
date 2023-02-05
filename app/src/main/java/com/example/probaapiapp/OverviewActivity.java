@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ public class OverviewActivity extends AppCompatActivity {
 
     private TextView textView;
     private LinearLayout layoutOverview;
+    private Button buttonReload2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,11 @@ public class OverviewActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.output);
         layoutOverview = findViewById(R.id.layoutOverview);
-
+        buttonReload2 = findViewById(R.id.buttonReload2);
+        buttonReload2.setOnClickListener(v -> {
+            finish();
+            startActivity(getIntent());
+        });
         Intent intent = getIntent();
         String date = intent.getStringExtra("date");
         String mensaId = intent.getStringExtra("mensaId");
@@ -62,23 +68,15 @@ public class OverviewActivity extends AppCompatActivity {
                     while (keys.hasNext()) {
                         String key = keys.next();
                         if (timeslots.get(key) instanceof JSONObject) {
-                            // src.append(timeslots.getJSONObject(key).getString("participantCount")+" ");
                             if (timeslots.getJSONObject(key).getString("participating").equals("true")) {
                                 TextView textView = new TextView(OverviewActivity.this);
-                                textView.setText(Html.fromHtml("<b>" + key + "</b>\n" + timeslots.getJSONObject(key).getString("participantCount") + "\n"));
-                                /*JSONArray array = timeslots.getJSONArray("participantNames");
-                                StringBuilder builder = new StringBuilder();
-                                for (int i = 0; i < array.length(); i++) {
-                                    builder.append(array.getJSONObject(i) + "  ");
-
-                                }
-                                TextView textView1 = new TextView(OverviewActivity.this);
-                                textView1.setText(builder);*/
+                                textView.setText(Html.fromHtml("<b>"
+                                        + key + " there are going to be:</b> "
+                                        + timeslots.getJSONObject(key).getString("participantCount")
+                                        + " people at this time <br>" + timeslots.getJSONObject(key).getString("participantNames")
+                                        + " and you" + "<br><br>"));
                                 layoutOverview.addView(textView);
-//                                layoutOverview.addView(textView1);
                             }
-
-
                         }
                     }
 

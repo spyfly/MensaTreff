@@ -139,7 +139,7 @@ public class ProbaActivity extends AppCompatActivity {
 
         String url = "https://mensatreff-api.spyfly.xyz/mensas/" + idOfMensa + "?date=" + date;
         JsonObjectRequest request = new JsonObjectRequest(
-              url, new Response.Listener<JSONObject>() {
+                url, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -158,8 +158,8 @@ public class ProbaActivity extends AppCompatActivity {
                         ));
                         ImageView imageView = new ImageView(ProbaActivity.this);
                         String imageUrl = tempObj.getString("image");
-                        Picasso.get().load("https:" + imageUrl).networkPolicy(NetworkPolicy.OFFLINE).into(imageView);
-
+                        Picasso.get().load("https:" + imageUrl).into(imageView);
+//.networkPolicy(NetworkPolicy.OFFLINE).
                         layout.addView(imageView);
                         layout.addView(tempView);
                     }
